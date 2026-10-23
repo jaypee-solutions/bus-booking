@@ -1,7 +1,7 @@
 ---
 type: Project
 title: Bus Booking
-description: Bus Booking is a Python package.
+description: Standalone web application for reserving the TSV Blaichach Sportbus.
 resource: https://github.com/jaypee-solutions/bus_booking
 tags: [python]
 timestamp: 2026-10-23T00:00:00Z
@@ -9,19 +9,15 @@ timestamp: 2026-10-23T00:00:00Z
 
 # Overview
 
-Bus Booking is a Python package.
-
-> Replace this section with what the project actually does and why it exists — the question it
-> answers that nothing else does. Keep it to a few paragraphs; detail belongs in the repository's
-> own documentation, linked below rather than copied here.
+Bus Booking replaces the bus reservation module of the in-house CMS of TSV Blaichach with a
+standalone German-language web application. Administrators use named Authentik accounts; bookers
+authenticate with one-time email links. The reviewed requirements are in [the PRD](../docs/PRD.md);
+the behaviour of the old module is analysed in [legacy bus module](legacy-bus-module.md).
 
 # Status
 
-Generated from
-[jaypee-solutions/python-template](https://github.com/jaypee-solutions/python-template). No
-implementation work has been captured in this bundle yet.
-
-> Keep this section current as milestones land. It is the first thing an agent reads.
+The PRD is reviewed; launch prerequisites remain outstanding. The code is still the generated
+template; nothing is implemented.
 
 # Sources of truth (not duplicated here)
 
