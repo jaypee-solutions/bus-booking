@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "prHourlyLimit": 5,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 10am on Monday"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.copier-answers\\.yml$/"],
+      "matchStrings": ["_commit:\\s*(?<currentValue>v?\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "jaypee-solutions/python-template",
+      "datasourceTemplate": "github-releases"
+    }
+  ],
+  "postUpgradeTasks": {
+    "commands": [
+      "copier update --defaults --trust --skip-tasks --vcs-ref {{{newVersion}}}"
+    ],
+    "fileFilters": ["**/*"]
+  }
+}

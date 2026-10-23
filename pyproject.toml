@@ -1,0 +1,122 @@
+[project]
+
+authors = [{email = "support@jaypee.solutions", name = "Jan-Peter Alten"}]
+description = "Bus Booking is a Python package."
+name = "bus_booking"
+readme = "README.md"
+requires-python = ">=3.14"
+version = "0.0.0"
+
+dependencies = [
+    "daiquiri>=3.4.0",
+    "rich>=15.0.0",
+    
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.1",
+    "pre-commit-uv>=4.3.0",
+    "pyright>=1.1.411",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.0"
+]
+
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+no-build-package = [
+    "daiquiri",
+    "rich",
+    "typer",
+    "pre-commit",
+    "pre-commit-uv",
+    "pyright",
+    "pytest",
+    "pytest-cov",
+    "ruff"
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+
+[tool.ruff.lint]
+extend-select = [
+    "A", # flake8-builtins
+    # "C4",  # flake8-comprehensions (needs mainly test fixes)
+    "ERA",    # eradicate (commented out code)
+    "G",      # flake8-logging-format
+    "I",      # isort
+    "ISC",    # flake8-implicit-string-concat
+    "PL",     # Pylint
+    "RET",    # flake8-return
+    "RUF100", # unused noqa
+    "SLF",    # flake8-self
+]
+ignore = [
+    "ISC001",  # single line string concat  # disabled per hint from ruff reg. conflict with formatter
+    "PLR0912", # too many branches
+    "PLR0913", # too many arguments
+    "PLR0915", # too many statements
+    "PLR2004", # magic value used in comparison  # we do this if value is just used once
+    "PLR1711", # useless return  # we return None explicitly
+]
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "SLF001", # allow access to private members in tests
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.pyright]
+useLibraryCodeForTypes = true
+include = ["src", "tests", "scripts"]
+exclude = ["**/node_modules", "**/__pycache__"]
+reportUnnecessaryTypeIgnoreComment = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+
+data_file = "coverage.coverage"
+source = ["src"]
+
+# `__main__.py` is a thin shim that only runs under `python -m`; same category as the
+# `if __name__ == "__main__":` guard excluded below.
+omit = ["*/__main__.py"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+skip_covered = true
+
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+    # have to re-enable the standard pragma:
+    "pragma: no cover",
+
+    # tests don't hit defensive assertion code:
+    "raise NotImplementedError",
+
+    # non-runnable code isn't run during tests:
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if .*TYPE_CHECKING:",
+
+    # do not measure coverage in platform dependent switches:
+    "sys.platform == '",
+    "sys.platform in",
+]

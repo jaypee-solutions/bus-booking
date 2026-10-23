@@ -1,0 +1,18 @@
+name: Conventional Commits
+
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v7
+        with:
+          # commitsar needs the full history to inspect every commit on the branch
+          fetch-depth: 0
+      - name: Commitsar Action
+        uses: aevea/commitsar@v1.0.3

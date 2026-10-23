@@ -1,0 +1,38 @@
+name: Format with Ruff
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    permissions:
+      # the auto-commit step pushes the formatting result back to the branch
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v9.0.0
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install the project
+        run: uv sync
+
+      - name: Format
+        run: uv run ruff format
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          # must be a type the conventional-commit workflows accept; `style` is not in the list
+          commit_message: "chore: format with ruff"

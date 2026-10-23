@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Create GitHub release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # fetch all history so the generated release notes can span the whole tag range
+          fetch-depth: 0
+      - name: Release
+        uses: softprops/action-gh-release@v3
+        with:
+          generate_release_notes: true
+
+  publish:
+    name: Publish to PyPI
+    needs: release
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      # required for PyPI Trusted Publishing (OIDC); no API token needs to be stored
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v9.0.0
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Build
+        run: uv build
+
+      - name: Publish
+        run: uv publish
